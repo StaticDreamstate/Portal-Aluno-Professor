@@ -1,5 +1,7 @@
 import Express, { Application } from "express";
+import { mySqlConnection } from "../database";
 import ENV from "./config/env";
+import logger from "../infra/logger";
 
 type SetupOptions = {
   test?: boolean;
@@ -33,9 +35,20 @@ export default class App {
       console.log(`[OK] API aguardando requisições... [Porta TCP ${selectedPort}]`);
     })
 
+    try {
+      mySqlConnection.hasConnection();
+
+    } catch (error) {
+      console.log(`[!] Conexão Recusada: ${error}`);
+      logger.error(`Conexão com o banco de dados recusada: ${error}`);
+      return;
+    }
+
   }
 
   getInstance() {
+    console.log("[OK] Banco de Dados conectado.");
+    logger.info("Banco de dados conectado.");
     return this.instance;
   }
 

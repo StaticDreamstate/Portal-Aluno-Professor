@@ -13,7 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const database_1 = require("../database");
 const env_1 = __importDefault(require("./config/env"));
+const logger_1 = __importDefault(require("../infra/logger"));
 class App {
     constructor() {
         this.defaultPort = process.env.PORT || 8080;
@@ -34,9 +36,19 @@ class App {
             this.instance.listen(process.env.PORT || selectedPort, () => {
                 console.log(`[OK] API aguardando requisições... [Porta TCP ${selectedPort}]`);
             });
+            try {
+                database_1.mySqlConnection.hasConnection();
+            }
+            catch (error) {
+                console.log(`[!] Conexão Recusada: ${error}`);
+                logger_1.default.error(`Conexão com o banco de dados recusada: ${error}`);
+                return;
+            }
         });
     }
     getInstance() {
+        console.log("[OK] Banco de Dados conectado.");
+        logger_1.default.info("Banco de dados conectado.");
         return this.instance;
     }
 }
