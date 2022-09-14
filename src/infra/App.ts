@@ -2,6 +2,7 @@ import Express, { Application } from "express";
 import { mySqlConnection } from "../database";
 import ENV from "./config/env";
 import logger from "../infra/logger";
+import BaseRoutes from "./BaseRoutes";
 
 type SetupOptions = {
   test?: boolean;
@@ -22,6 +23,7 @@ export default class App {
 
     this.instance.use(Express.json());
     this.instance.use(Express.urlencoded({ extended: true }));
+    this.instance.use(BaseRoutes);
 
     if (options.test) {
       console.log("[OK] Teste de configuração.");

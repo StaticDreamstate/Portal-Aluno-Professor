@@ -2,6 +2,8 @@ import "dotenv/config";
 
 const ENV = {
   API_NAME: process.env.API_NAME as string,
+  API_VER: process.env.API_VER as string,
+  AUTHOR: process.env.AUTHOR as string,
   NODE_ENV: process.env.NODE_ENV as string,
   DB_NAME: process.env.DB_NAME as string,
   DB_USER: process.env.DB_USER as string,
